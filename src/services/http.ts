@@ -5,9 +5,11 @@ export class HTTP {
   logger: Logger;
   apiConfig: ApiConfig;
 
-  constructor(apiConfig: ApiConfig) {
+  static $inject = ["apiConfig", "logger"];
+
+  constructor(apiConfig: ApiConfig, logger: Logger) {
     this.apiConfig = apiConfig;
-    this.logger = new Logger();
+    this.logger = logger;
   }
 
   async get(url: string) {
@@ -15,11 +17,15 @@ export class HTTP {
 
     if (response.ok) {
       const responseData = await response.json();
-      this.logger.info(`Status: ${response.status}. Response: ${JSON.stringify(responseData)}`);
+      this.logger.info(
+        `Status: ${response.status}. Response: ${JSON.stringify(responseData)}`
+      );
 
       return responseData;
     } else {
-      this.logger.error(`Status: ${response.status}. Status Text: ${response.statusText}`);
+      this.logger.error(
+        `Status: ${response.status}. Status Text: ${response.statusText}`
+      );
     }
   }
 }
